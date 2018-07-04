@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// ゲームシーン
-/// </summary>
-public class GameScene :IScene {
+public class TitleScene : IScene {
 
     /// <summary>
     /// 初期化
@@ -20,11 +17,6 @@ public class GameScene :IScene {
     /// </summary>
     public void Update()
     {
-        //  制限時間が0ならゲーム終了
-        if (TimeLimit.Instance.isTimeLimit) { return; }
-
-        //  プレイヤー更新
-        PlayerManager.Instance.PlayersUpdate();
 
     }
 

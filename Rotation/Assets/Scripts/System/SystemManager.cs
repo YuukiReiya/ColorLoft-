@@ -9,7 +9,7 @@ public class SystemManager : SingletonMonoBehaviour<SystemManager> {
 
     //  private param!
     [SerializeField, Tooltip("ゲームのTargetFrameRate")] int fps = 60;
-    
+
     //  Property!
     public int Fps { get { return fps; } }
 
@@ -25,6 +25,9 @@ public class SystemManager : SingletonMonoBehaviour<SystemManager> {
 
         //  clock zero!
         WorldClock.CountZero();
+
+        //  scene initialize!
+        SceneController.Instance.Initialize();
 	}
 	
 	// Update is called once per frame
@@ -33,5 +36,7 @@ public class SystemManager : SingletonMonoBehaviour<SystemManager> {
         //  clock count!
         WorldClock.CountUp();
 
+        //  scene update!
+        SceneController.Instance.SceneUpdate();
 	}
 }

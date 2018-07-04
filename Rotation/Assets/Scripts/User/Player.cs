@@ -46,9 +46,18 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Move();
-        Turn();
+        //Move();
+        //Turn();
 	}
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    public void PlayerUpdate()
+    {
+        Turn();
+        Move();
+    }
 
     /// <summary>
     /// 移動
@@ -129,6 +138,10 @@ public class Player : MonoBehaviour {
         this.point += point;
     }
 
+    /// <summary>
+    /// 所持ポイント
+    /// </summary>
+    /// <returns></returns>
     public int GetPoint()
     {
         return point;

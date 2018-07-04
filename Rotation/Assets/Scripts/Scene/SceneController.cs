@@ -17,6 +17,8 @@ public class SceneController : SingletonMonoBehaviour<SceneController> {
     public enum SCENE
     {
         GAME = 1,
+        TITLE,
+        RESULT,
     }
 
     /// <summary>
@@ -24,6 +26,7 @@ public class SceneController : SingletonMonoBehaviour<SceneController> {
     /// </summary>
     public void Initialize()
     {
+        root = ConvertScene(SCENE.GAME);
         root.Start();
     }
 
@@ -58,6 +61,7 @@ public class SceneController : SingletonMonoBehaviour<SceneController> {
         switch (eScene)
         {
             case SCENE.GAME:return new GameScene();
+            case SCENE.TITLE:return new TitleScene();
         }
 
         Debug.LogError("<color=red>this is not convert scene!</color>");
