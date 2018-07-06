@@ -12,16 +12,29 @@ public class GameScene :IScene {
     /// </summary>
     public void Start()
     {
+        PlayerManager.Instance.Set();
 
+        GameStartCount.Instance.CountUp();
     }
 
+    bool f = false;
     /// <summary>
     /// 更新
     /// </summary>
     public void Update()
     {
-        //  制限時間が0ならゲーム終了
-        if (TimeLimit.Instance.isTimeLimit) { return; }
+
+        if (!GameStartCount.Instance.isStart) { return; }
+
+        TimeLimit.Instance.CountUp();
+
+        //  制限時間が0ならシーン遷移
+        if (TimeLimit.Instance.isTimeLimit) {
+
+            if (f) { return; }
+            SceneController.Instance.LoadFadeScene(SceneController.SCENE.RESULT);
+            f = true;
+        }
 
         //  プレイヤー更新
         PlayerManager.Instance.PlayersUpdate();

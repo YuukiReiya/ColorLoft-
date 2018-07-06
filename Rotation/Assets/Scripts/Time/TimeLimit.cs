@@ -23,14 +23,19 @@ public class TimeLimit : SingletonMonoBehaviour<TimeLimit> {
 
 	// Use this for initialization
 	void Start () {
-
         count = sec;
+        text.text = (minute / 10).ToString() + (minute % 10).ToString() + ":" + (second / 10).ToString() + (second % 10).ToString();
         f = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+        
+	}
+
+    public void CountUp()
+    {
         text.text = (minute / 10).ToString() + (minute % 10).ToString() + ":" + (second / 10).ToString() + (second % 10).ToString();
 
         //  一秒ずつ減算
@@ -40,5 +45,5 @@ public class TimeLimit : SingletonMonoBehaviour<TimeLimit> {
             count--;
             if (count < 0) { count = 0; }
         }
-	}
+    }
 }

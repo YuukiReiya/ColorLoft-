@@ -139,11 +139,36 @@ public class Player : MonoBehaviour {
     }
 
     /// <summary>
-    /// 所持ポイント
+    /// 所持ポイント取得
     /// </summary>
     /// <returns></returns>
     public int GetPoint()
     {
         return point;
     }
+
+    /// <summary>
+    /// 移動アニメーションの停止
+    /// </summary>
+    public void StopMoveAnimation()
+    {
+        animator.SetFloat("Speed", 0);
+    }
+
+    /// <summary>
+    /// 勝利アニメーション
+    /// </summary>
+    public void StartWinAnimation()
+    {
+        animator.SetTrigger("isWin");
+    }
+
+    /// <summary>
+    /// 敗北アニメーション
+    /// </summary>
+    public void StartLoseAnimation()
+    {
+        animator.SetTrigger("isLose");
+    }
+
 }

@@ -22,13 +22,21 @@ public class SystemManager : SingletonMonoBehaviour<SystemManager> {
     // Use this for initialization
     void Start () {
 
-
         //  clock zero!
         WorldClock.CountZero();
 
+        //  fade initialize!
+        FadeManager.Instance.Initialize();
+
         //  scene initialize!
         SceneController.Instance.Initialize();
-	}
+
+        //  Don't Destroy!
+        DontDestroyOnLoad(Instance.gameObject);
+        DontDestroyOnLoad(FadeManager.Instance.gameObject);
+        DontDestroyOnLoad(SceneController.Instance.gameObject);
+
+    }
 	
 	// Update is called once per frame
 	void Update () {

@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// リザルトシーン
+/// プレイヤーのエントリーシーン
 /// </summary>
-public class ResultScene : IScene {
+public class EntryScene : IScene {
 
     /// <summary>
     /// 初期化
     /// </summary>
     public void Start()
     {
-        PlayerManager.Instance.Set();
-        PlayerManager.Instance.GetPlayer(1).StartWinAnimation();
-        PlayerManager.Instance.GetPlayer(0).StartLoseAnimation();
+
     }
 
     /// <summary>
@@ -32,5 +30,4 @@ public class ResultScene : IScene {
     {
 
     }
-
 }

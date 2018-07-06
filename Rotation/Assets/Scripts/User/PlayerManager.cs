@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : SingletonMonoBehaviour<PlayerManager> {
+public class PlayerManager :SingletonBase<PlayerManager> {
+
 
     [SerializeField]
     Player[] players;
@@ -18,6 +19,9 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager> {
 		
 	}
 
+    /// <summary>
+    /// 更新処理
+    /// </summary>
     public void PlayersUpdate()
     {
         foreach(var it in players)
@@ -25,6 +29,7 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager> {
             it.PlayerUpdate();
         }
     }
+
 
     void CreatePlayer()
     {
@@ -45,12 +50,29 @@ public class PlayerManager : SingletonMonoBehaviour<PlayerManager> {
         //上限をオーバー
         else if (players.Length <= index) { p = players[(players.Length - 1)]; }
         //エラー無し
-        else
-        {
-            p = players[index];
-        }
+        else  { p = players[index]; }
 
         return p;
+    }
+
+    /// <summary>
+    /// 仮処理
+    /// </summary>
+    public void Set()
+    {
+
+
+        var tmp = Object.FindObjectsOfType<Player>();
+
+        players = new Player[tmp.Length];
+
+        int index = 0;
+        foreach (var it in tmp)
+        {
+            players[index] = it;
+            index++;
+        }
+
     }
 
 }
