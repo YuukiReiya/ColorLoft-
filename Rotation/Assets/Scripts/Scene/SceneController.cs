@@ -29,7 +29,8 @@ public class SceneController : SingletonMonoBehaviour<SceneController> {
     /// </summary>
     public void Initialize()
     {
-        root = ConvertScene(SCENE.GAME);
+        int index = SceneManager.GetActiveScene().buildIndex;
+        root = ConvertScene((SCENE)index);
         root.Start();
     }
 

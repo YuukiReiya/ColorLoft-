@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager :SingletonBase<PlayerManager> {
+public class PlayerManager :SingletonMonoBehaviour<PlayerManager> {
 
+    [SerializeField,] Player[] playersPrefab;
 
-    [SerializeField]
     Player[] players;
+    int[] id;
+
 
     // Use this for initialization
     void Start () {
