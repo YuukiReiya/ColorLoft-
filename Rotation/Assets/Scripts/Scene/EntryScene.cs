@@ -19,22 +19,30 @@ public class EntryScene : IScene {
         public bool isInput;       //スティックの連続入力防止フラグ
     }
 
-    EntryData[] data;
-
     /// <summary>
     /// 定数宣言
     /// </summary>
     private const int RESET_FRAME = 15;//キー入力をリセットするフレーム
+
+    //private param!
+    EntryData[] data;   //参加者用データ
+    bool isTransition;  //シーン遷移フラグ
 
     /// <summary>
     /// 初期化
     /// </summary>
     public void Start()
     {
+        //遷移フラグ
+        isTransition = false;
+
+        //プレイヤーの準備
+        PlayerManager.Instance.Initialize();
+
         //最大4人までなので4つ用意しておく！
-        data = new EntryData[4];
+        data = new EntryData[DataBase.PLAYER_NUM];
        
-        //
+        //データを初期化
         for(int i = 0; i < data.Length; ++i)
         {
             data[i]             = new EntryData();
@@ -43,6 +51,8 @@ public class EntryScene : IScene {
             data[i].id          = 0;
             data[i].isInput     = false;
         }
+
+        //ビューワーの初期化
         ViewerManager.Instance.Initialize();
     }
 
@@ -51,8 +61,18 @@ public class EntryScene : IScene {
     /// </summary>
     public void Update()
     {
-        Entry();
-        EAfterInput();
+        EFinishInput(); //参加締め切り処理
+
+        //シーン遷移のフラグを判定
+        if (isTransition)
+        {
+            StartGame();
+        }
+
+        Entry();        //参加受付
+        EAfterInput();  //参加者更新処理
+
+        //モデルのビュー
         ViewerManager.Instance.View();
     }
 
@@ -80,11 +100,12 @@ public class EntryScene : IScene {
             {
                 data[i].registered = true;
 
-                int id_m = (int)DataBase.MODEL.UTC_S * DataBase.ID_MODEL;   //モデル番号(初期はUTC_S)
+                int id_i = (int)data[i].index * DataBase.ID_INDEX;          //コントローラー番号
+                int id_m = (int)DataBase.MODEL.UTC_S * DataBase.ID_PREFAB;  //モデル番号(初期はUTC_S)
                 int id_c = (int)data[i].index * DataBase.ID_COLOR;          //色番号(初期はコントローラー番号に応じた色が設定)
 
                 //ID決定
-                data[i].id = id_m + id_c;
+                data[i].id = id_i + id_m + id_c;
 
                 //一番最初のモデルビュー(UTC_S)
                 ViewerManager.Instance.Create(data[i].index, 0);
@@ -118,14 +139,16 @@ public class EntryScene : IScene {
     {
         var input = MyInputManager.GetController(index);
 
-        //IDから選択モデル取得
-        int id_m = data.id / DataBase.ID_MODEL;
+        //IDからコントローラーインデックス取得
+        int id_i = DataBase.GetControllerID(data.id);
 
-        int before = DataBase.GetModelID(data.id);//比較用変更前のモデル番号
+        //IDから選択モデル取得
+        int id_m = DataBase.GetPrefabID(data.id);
+
+        int before = DataBase.GetPrefabID(data.id);//比較用変更前のモデル番号
 
         //左
         if (!data.isInput && input.LStick.x < 0)
-        // if (input.X)
         {
             id_m--;
             if ((DataBase.MODEL)id_m < DataBase.MODEL.UTC_S)
@@ -143,7 +166,6 @@ public class EntryScene : IScene {
         }
         //右
         else if (!data.isInput && input.LStick.x > 0)
-        //else if (input.B)
         {
             id_m++;
             if ((DataBase.MODEL)id_m > DataBase.MODEL.YUKO_W)
@@ -159,23 +181,67 @@ public class EntryScene : IScene {
             CoroutineManager.Instance.StartCoroutineMethod(coroutine);
         }
 
-        id_m *= DataBase.ID_MODEL;
+        id_i *= DataBase.ID_INDEX;
+        id_m *= DataBase.ID_PREFAB;
         int id_c = DataBase.GetColorID(data.id);
         //IDの再設定
-        data.id = id_m + id_c;
-
+        data.id = id_i + id_m + id_c;
 
         //IDの変更があった場合モデルビューに表示するモデルを切り替える
-        if (DataBase.GetModelID(data.id) != before)
+        if (DataBase.GetPrefabID(data.id) != before)
         {
-            ViewerManager.Instance.Create(index, (id_m / DataBase.ID_MODEL - 1));
+            ViewerManager.Instance.Create(index, (id_m / DataBase.ID_PREFAB - 1));
         }
 
     }
 
+    /// <summary>
+    /// スティックの連続入力防止用コルーチン
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     private IEnumerator ResetKeyFlags(EntryData data)
     {
         for (int i = 0; i < RESET_FRAME; ++i) yield return null;
         data.isInput = false;
+    }
+
+    /// <summary>
+    /// エントリー終了の操作
+    /// </summary>
+    private void EFinishInput()
+    {
+        //foreach文だと書き換えできないためfor文
+        for (int i = 0; i < data.Length; ++i)
+        {
+            //登録してなければ処理しない
+            if (!data[i].registered) { continue; }
+
+            var input = MyInputManager.GetController(data[i].index);
+
+            //ゲーム開始
+            if (input.START)
+            {
+                isTransition = true;
+                Debug.Log(data[i].id);
+                break;
+            }
+        }
+
+    }
+
+    /// <summary>
+    /// ゲームの開始
+    /// </summary>
+    private void StartGame()
+    {
+        SceneController.Instance.LoadFadeScene(SceneController.SCENE.GAME);
+
+        //IDの設定
+        //foreach文だと書き換えできないためfor文
+        for (int i = 0; i < data.Length; ++i)
+        {
+            PlayerManager.Instance.SetID(data[i].id);
+        }
     }
 }

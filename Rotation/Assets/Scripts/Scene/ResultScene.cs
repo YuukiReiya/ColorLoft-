@@ -12,7 +12,7 @@ public class ResultScene : IScene {
     /// </summary>
     public void Start()
     {
-        PlayerManager.Instance.Set();
+        //PlayerManager.Instance.Set();
         PlayerManager.Instance.GetPlayer(1).StartWinAnimation();
         PlayerManager.Instance.GetPlayer(0).StartLoseAnimation();
     }

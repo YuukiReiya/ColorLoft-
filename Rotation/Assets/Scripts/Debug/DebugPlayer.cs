@@ -17,8 +17,10 @@ public class DebugPlayer : MonoBehaviour {
         foreach (var it in tmp)
         {
             players[index] = it;
+            players[index].Initialize();
             index++;
         }
+
 
 
     }

@@ -3,20 +3,42 @@
 
 public class DataBase
 {
+    //定数部
+    public static readonly int PLAYER_NUM = 4;//プレイヤーの最大人数
+
     //IDの算出部
-    //3,4桁目:    モデル番号
+    //  5桁目:    コントローラー番号
+    //3,4桁目:    プレハブ番号
     //1,2桁目:    色番号
-    public static readonly int ID_MODEL = 100;//モデルオフセット
-    public static readonly int ID_COLOR  = 1; //色のオフセット
+    public static readonly int ID_INDEX = 10000; //コントローラーオフセット
+    public static readonly int ID_PREFAB = 100;  //プレハブオフセット
+    public static readonly int ID_COLOR  = 1;    //色のオフセット
 
     /// <summary>
-    /// IDからモデル部分のみを抜粋
+    /// IDからコントローラーのインデックス部分のみを抜粋
     /// </summary>
     /// <param name="id">元ID</param>
     /// <returns></returns>
-    public static int GetModelID(int id)
+    public static int GetControllerID(int id)
     {
-        return id / ID_MODEL;
+        return id / ID_INDEX;
+    }
+
+    /// <summary>
+    /// IDからプレハブ部分のみを抜粋
+    /// </summary>
+    /// <param name="id">元ID</param>
+    /// <returns></returns>
+    public static int GetPrefabID(int id)
+    {
+        int tmp= id / ID_PREFAB;
+
+        int one, ten;
+        one = tmp % 10;     //1の位
+        ten = tmp / 10 % 10;//10の位
+
+        //10の位+1の位
+        return ten * 10 + one;
     }
 
     /// <summary>

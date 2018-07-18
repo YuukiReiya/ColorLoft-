@@ -41,11 +41,14 @@ public class ViewerManager : SingletonMonoBehaviour<ViewerManager> {
         view[(int)(index - 1)].Create(viewerModels[modelIndex]);
     }
 
+    /// <summary>
+    /// ビュー用の処理
+    /// </summary>
     public void View()
     {
         foreach(var it in view)
         {
-            it.RotateModel();
+            it.RotateModel();//モデルの回転
         }
     }
 }

@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour {
 
+
     //  private param!
     [SerializeField,Tooltip("使用するコントローラーのインデックス")]
     private GamePadInput.GamePad.Index useControllerIndex;
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour {
     [SerializeField, Range(0.5f, 10.0f), Tooltip("移動速度")] private float moveSpeed;
     [SerializeField, Range(1.0f, 10.0f), Tooltip("回転速度")] private float rotSpeed;
     [SerializeField, Tooltip("ダッシュ時の移動速度の倍率")] private float dashMag = 1;
-    //  
+     
     private GamePadController gamePad;
     private int point;
 
@@ -33,23 +34,62 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        //  コントローラー取得
-        gamePad = MyInputManager.GetController(useControllerIndex);
+        ////  コントローラー取得
+        //gamePad = MyInputManager.GetController(useControllerIndex);
 
-        //  初期位置の記憶
-        resetPos = modelObuject.transform.position;
+        ////  初期位置の記憶
+        //resetPos = modelObuject.transform.position;
 
-        //移動可能フラグ
-        isMove = true;
+        ////移動可能フラグ
+        //isMove = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        gamePad = MyInputManager.GetController(useControllerIndex);
 
-        //Move();
-        //Turn();
+    }
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    public void Initialize()
+    {
+        //移動可能フラグ
+        isMove = true;
+
+        Debug.Log(MyInputManager.GetController(useControllerIndex).gameObject.name);
+        //コントローラーの設定
+        gamePad = MyInputManager.GetController(useControllerIndex);
+    }
+
+    /// <summary>
+    /// 使用するコントローラーの設定
+    /// </summary>
+    /// <param name="index"></param>
+    public void SetControllerIndex(GamePadInput.GamePad.Index index)
+    {
+        useControllerIndex = index;
+        gamePad = MyInputManager.GetController(useControllerIndex);
+    }
+
+    /// <summary>
+    /// プレイヤーのモデルを設定
+    /// </summary>
+    /// <param name="model"></param>
+    public void SetPlayerModel(GameObject model)
+    {
+        if (!model) { Debug.LogError("player model is null!"); }
+        modelObuject = model;
+    }
+
+    /// <summary>
+    /// 色の設定
+    /// </summary>
+    /// <param name="color"></param>
+    public void SetColor(DataBase.COLOR color)
+    {
+        this.color = color;
     }
 
     /// <summary>
@@ -57,7 +97,19 @@ public class Player : MonoBehaviour {
     /// </summary>
     public void PlayerUpdate()
     {
+        //コントローラー
+        gamePad = MyInputManager.GetController(useControllerIndex);
+
+
+        if (gamePad.BACK)
+        {
+
+            Debug.Log(modelObuject.name);
+        }
+
+        //回転
         Turn();
+        //移動
         Move();
     }
 

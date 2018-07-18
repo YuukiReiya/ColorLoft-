@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// MonoBehaviourを継承していないスクリプトから
+/// コルーチンを呼び出せるようにするコルーチンの管理クラス
+/// </summary>
 public class CoroutineManager : SingletonMonoBehaviour<CoroutineManager> {
 
     /// <summary>

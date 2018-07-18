@@ -12,7 +12,8 @@ public class GameScene :IScene {
     /// </summary>
     public void Start()
     {
-        PlayerManager.Instance.Set();
+        // PlayerManager.Instance.Set();
+        PlayerManager.Instance.CreatePlayer();
 
         GameStartCount.Instance.CountUp();
     }

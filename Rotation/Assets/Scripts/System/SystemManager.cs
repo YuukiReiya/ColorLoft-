@@ -35,7 +35,9 @@ public class SystemManager : SingletonMonoBehaviour<SystemManager> {
         DontDestroyOnLoad(Instance.gameObject);
         DontDestroyOnLoad(FadeManager.Instance.gameObject);
         DontDestroyOnLoad(SceneController.Instance.gameObject);
-
+        DontDestroyOnLoad(PlayerManager.Instance.gameObject);
+        DontDestroyOnLoad(CoroutineManager.Instance.gameObject);
+        DontDestroyOnLoad(MyInputManager.AllController.gameObject);//all input object
     }
 	
 	// Update is called once per frame
