@@ -1,0 +1,10 @@
+更新点
+
+<2018/03/03>
+【MyInputManager_v1.2.unitypackage】
+・GamePadコントローラーのGravityが機能するようなので値を入れられるように変更
+・変数名を変更
+
+<2018/07/26>
+【MyInputManager_v1.25.unitypackage】
+・Unity2018.2への対応
